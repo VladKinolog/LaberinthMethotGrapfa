@@ -2,10 +2,23 @@
  * Генератор Лаберинта 18.03.2016.
  */
 public class LabyrinthGenerator {
+    private int CELL = 0;
+    private int WALL = 1;
+    private int VISIT = 2;
     private int labyrinthWeigh;
     private int labyrinthHeight;
     private int x,y;
-    private boolean [][] labyrinthField;
+    private int [][] labyrinthField;
+
+         class Cell{
+             int x;
+             int y;
+
+             Cell (int x,int y){
+                 this.x = x;
+                 this.y = y;
+             }
+        }
 
 
     // Конструкторы + генерация начального поля
@@ -42,16 +55,16 @@ public class LabyrinthGenerator {
     }
 
     // Инициализация полей лаберинта
-    private  boolean [][] fieldGenerator (){
+    private  int [][] fieldGenerator (){
 
-        boolean [][] labyrinthField = new boolean[labyrinthWeigh][labyrinthHeight];
+        int [][] labyrinthField = new int[labyrinthWeigh][labyrinthHeight];
         for (int i=0; i<labyrinthWeigh; i++){
             for (int j=0; j<labyrinthHeight; j++){
                 if ((i % 2 != 0 && j % 2 != 0) && (i < labyrinthWeigh - 1 && j < labyrinthHeight - 1)) {
-                    labyrinthField [i][j] = false;
+                    labyrinthField [i][j] = CELL;
                 }
                 else {
-                    labyrinthField [i][j] = true;
+                    labyrinthField [i][j] = WALL;
                 }
             }
         }
@@ -61,27 +74,36 @@ public class LabyrinthGenerator {
 
     public static void main(String[] args){
         LabyrinthGenerator lab = new LabyrinthGenerator();
-        for (boolean[] i:lab.labyrinthField){
-            for (boolean j:i) {
-                if (j) System.out.print("X");
-                else System.out.print(" ");
+        for (int[] i:lab.labyrinthField){
+            for (int j:i) {
+                 System.out.print(j);
+
             }
             System.out.println();
         }
     }
 
     // массив непосещеных соседей
-    private int [] getNeighbours (int x,int y ){
-        int step = 2;
-        int up = y - 2;
-        int dwn = y + 2;
-        int lft = x - 2;
-        int rht = x + 2;
+    private int [] getNeighbours (int x, int y, Cell c ){
+        //int step = 2;
+        Cell up = new Cell(x,y+1);
+        Cell dwn = new Cell(x,y-1);
+        Cell lft = new Cell(x+1,y);
+        Cell rht = new Cell(x-1,y);
+        Cell [] checkDir = {up,dwn,lft,rht};
 
-        
+        for (Cell i:checkDir){
+            if (x > 0 && y > 0 && x < labyrinthWeigh && y < labyrinthHeight){
+                if (labyrinthField[i][i] == VISIT){
 
+                }
+
+            }
+        }
 
         return;
     }
+
+
 
 }
