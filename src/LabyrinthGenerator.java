@@ -2,9 +2,9 @@
  * Генератор Лаберинта 18.03.2016.
  */
 public class LabyrinthGenerator {
-    private int CELL = 0;
-    private int WALL = 1;
-    private int VISIT = 2;
+    private static final int CELL = 0;
+    private static final int WALL = 1;
+    private static final int VISIT = 2;
     private int labyrinthWeigh;
     private int labyrinthHeight;
     private int x,y;
@@ -84,8 +84,10 @@ public class LabyrinthGenerator {
     }
 
     // массив непосещеных соседей
-    private int [] getNeighbours (int x, int y, Cell c ){
+    private int [] getNeighbours ( Cell c ){
         //int step = 2;
+        int x = c.x;
+        int y = c.y;
         Cell up = new Cell(x,y+1);
         Cell dwn = new Cell(x,y-1);
         Cell lft = new Cell(x+1,y);
@@ -94,14 +96,14 @@ public class LabyrinthGenerator {
 
         for (Cell i:checkDir){
             if (x > 0 && y > 0 && x < labyrinthWeigh && y < labyrinthHeight){
-                if (labyrinthField[i][i] == VISIT){
+                if (labyrinthField[i.x][i.y] == VISIT){
 
                 }
 
             }
         }
 
-        return;
+        return ;
     }
 
 
