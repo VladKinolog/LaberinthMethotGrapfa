@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Генератор Лаберинта 18.03.2016.
  */
@@ -84,27 +87,37 @@ public class LabyrinthGenerator {
     }
 
     // массив непосещеных соседей
-    private int [] getNeighbours ( Cell c ){
-        //int step = 2;
+    private List<Cell> getNeighbours ( Cell c, int distance){
         int x = c.x;
         int y = c.y;
-        Cell up = new Cell(x,y+1);
-        Cell dwn = new Cell(x,y-1);
-        Cell lft = new Cell(x+1,y);
-        Cell rht = new Cell(x-1,y);
+        Cell up = new Cell(x,y+distance);
+        Cell dwn = new Cell(x,y-distance);
+        Cell lft = new Cell(x+distance,y);
+        Cell rht = new Cell(x-distance,y);
         Cell [] checkDir = {up,dwn,lft,rht};
+        List<Cell> notVisNeighbor= new ArrayList<>();
+
 
         for (Cell i:checkDir){
-            if (x > 0 && y > 0 && x < labyrinthWeigh && y < labyrinthHeight){
-                if (labyrinthField[i.x][i.y] == VISIT){
-
+            if (i.x > 0 && i.y > 0 && i.x < labyrinthWeigh && i.y < labyrinthHeight){
+                Cell currentCell = new Cell(i.x,i.y);
+                if (labyrinthField[i.x][i.y] != VISIT && labyrinthField[i.x][i.y] != WALL){
+                    notVisNeighbor.add(currentCell);
                 }
-
             }
         }
-
-        return ;
+        return notVisNeighbor;
     }
+
+    // Удаление стенки лаберинта
+
+    private void dellWall(Cell first, Cell second){
+        int dx = second.x - first.x;
+        int dy = second.y - first.y;
+        Cell currentWall;
+
+    }
+
 
 
 
