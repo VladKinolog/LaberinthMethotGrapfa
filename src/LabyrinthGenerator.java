@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Генератор Лаберинта 18.03.2016.
@@ -10,8 +11,10 @@ public class LabyrinthGenerator {
     private static final int VISIT = 2;
     private int labyrinthWeigh;
     private int labyrinthHeight;
-    private int x,y;
     private int [][] labyrinthField;
+    int unvisitedCount;
+    Cell initCell = new Cell(2,2);
+    Stack<Cell> stackCell = new Stack<>();
 
          class Cell{
              int x;
@@ -42,6 +45,7 @@ public class LabyrinthGenerator {
         }
         labyrinthField = this.fieldGenerator();
     }
+
     LabyrinthGenerator(int length,int height){
         if (length % 2 == 0){
             this.labyrinthWeigh = length + 1;
@@ -77,6 +81,7 @@ public class LabyrinthGenerator {
 
     public static void main(String[] args){
         LabyrinthGenerator lab = new LabyrinthGenerator();
+
         for (int[] i:lab.labyrinthField){
             for (int j:i) {
                  System.out.print(j);
@@ -114,7 +119,36 @@ public class LabyrinthGenerator {
     private void dellWall(Cell first, Cell second){
         int dx = second.x - first.x;
         int dy = second.y - first.y;
-        Cell currentWall;
+        int addX,addY;
+
+
+        addX = (dx != 0) ? dx/Math.abs(dx):0;
+        addY = (dy != 0) ? dy/Math.abs(dy):0;
+
+        Cell currentWall = new Cell(addX,addY);
+
+        labyrinthField[currentWall.x][currentWall.y] = VISIT;
+
+    }
+
+    // Генерация матрицы Лаберинта
+    private void generatorMaze (){
+        Cell currentCell = new Cell(2,2);
+        Cell targetCell;
+
+        do {
+
+            //рассмотреть возможность упростить циклы определения не посещенных клеток
+            unvisitedCount = 0;
+            for (int i []:labyrinthField) {
+                for (int j:i) {
+                    if (j == CELL) unvisitedCount++;
+                }
+            }
+
+
+
+        }while (unvisitedCount>0);
 
     }
 
