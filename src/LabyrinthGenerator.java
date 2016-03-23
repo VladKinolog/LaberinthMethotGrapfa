@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Генератор Лаберинта 18.03.2016.
@@ -80,11 +78,15 @@ public class LabyrinthGenerator {
     }
 
     public static void main(String[] args){
-        LabyrinthGenerator lab = new LabyrinthGenerator();
+        LabyrinthGenerator lab = new LabyrinthGenerator(100,100);
+        lab.generatorMaze ();
+
 
         for (int[] i:lab.labyrinthField){
             for (int j:i) {
-                 System.out.print(j);
+                if (j == VISIT) {
+                    System.out.print("O ");
+                } else {System.out.print("X ");}
 
             }
             System.out.println();
@@ -120,33 +122,79 @@ public class LabyrinthGenerator {
         int dx = second.x - first.x;
         int dy = second.y - first.y;
         int addX,addY;
+        int targetX,targetY;
 
 
         addX = (dx != 0) ? dx/Math.abs(dx):0;
         addY = (dy != 0) ? dy/Math.abs(dy):0;
 
-        Cell currentWall = new Cell(addX,addY);
+        targetX = first.x + addX;
+        targetY = first.y + addY;
+
+        Cell currentWall = new Cell(targetX,targetY);
 
         labyrinthField[currentWall.x][currentWall.y] = VISIT;
 
     }
 
+    public List<Cell> getUnvisited (){
+        //Cell unvisitedCell;
+        List <Cell> unvisited = new ArrayList<>();
+        for (int i = 0; i>labyrinthField.length; i++){
+            for (int j = 0; j>labyrinthField.length; j++){
+               if (labyrinthField[i][j] == CELL){
+                   unvisited.add(new Cell(i,j));
+
+               }
+            }
+        }
+        return unvisited;
+    }
+
     // Генерация матрицы Лаберинта
     private void generatorMaze (){
-        Cell currentCell = new Cell(2,2);
+        Cell currentCell = new Cell(1,1);
+
         Cell targetCell;
+        List<Cell> neighbours;
+        List<Cell>  unvisited;
 
         do {
+            labyrinthField[currentCell.x][currentCell.y] = VISIT;
+            neighbours = getNeighbours(currentCell, 2);
+            if (neighbours.size() != 0) {
+                Collections.shuffle(neighbours);
+                targetCell = neighbours.get(0);
+                stackCell.push(currentCell);
+                dellWall(currentCell,targetCell);
+                currentCell = targetCell;
+            }
+
+            else if (stackCell.size() > 0){
+                currentCell = stackCell.pop();
+            }
+
+            else {
+
+
+                unvisited = getUnvisited ();
+                Collections.shuffle(unvisited);
+                if (unvisited.size()> 0) {
+                    currentCell = unvisited.get(0);
+                }
+
+
+            }
+
 
             //рассмотреть возможность упростить циклы определения не посещенных клеток
             unvisitedCount = 0;
             for (int i []:labyrinthField) {
                 for (int j:i) {
                     if (j == CELL) unvisitedCount++;
+
                 }
             }
-
-
 
         }while (unvisitedCount>0);
 
